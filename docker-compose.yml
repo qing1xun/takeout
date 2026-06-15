@@ -1,0 +1,62 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: takeout-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: takeout
+      MYSQL_USER: takeout
+      MYSQL_PASSWORD: takeout_dev_123
+      MYSQL_ROOT_PASSWORD: root_dev_123
+      TZ: Asia/Shanghai
+    ports:
+      - "13306:3306"
+    volumes:
+      - takeout-mysql-data:/var/lib/mysql
+      - ./backend/src/main/resources/db/mysql:/docker-entrypoint-initdb.d:ro
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -utakeout -ptakeout_dev_123 --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7.4
+    container_name: takeout-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - takeout-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: takeout-rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: takeout
+      RABBITMQ_DEFAULT_PASS: takeout_dev_123
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - takeout-rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  takeout-mysql-data:
+  takeout-redis-data:
+  takeout-rabbitmq-data:

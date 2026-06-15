@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: backend
+app:
+  persistence: ${TAKEOUT_PERSISTENCE:memory}
+  redis:
+    enabled: ${TAKEOUT_REDIS_ENABLED:false}
+    host: ${TAKEOUT_REDIS_HOST:localhost}
+    port: ${TAKEOUT_REDIS_PORT:6379}
+    password: ${TAKEOUT_REDIS_PASSWORD:}
+    timeout-ms: ${TAKEOUT_REDIS_TIMEOUT_MS:2000}
+  rabbitmq:
+    enabled: ${TAKEOUT_RABBITMQ_ENABLED:false}
+    host: ${TAKEOUT_RABBITMQ_HOST:localhost}
+    port: ${TAKEOUT_RABBITMQ_PORT:5672}
+    username: ${TAKEOUT_RABBITMQ_USERNAME:takeout}
+    password: ${TAKEOUT_RABBITMQ_PASSWORD:takeout_dev_123}
+    exchange: ${TAKEOUT_RABBITMQ_EXCHANGE:takeout.events}
+    queue: ${TAKEOUT_RABBITMQ_QUEUE:takeout.events.main}
+    dlq: ${TAKEOUT_RABBITMQ_DLQ:takeout.events.dlq}
+  datasource:
+    url: ${TAKEOUT_DB_URL:jdbc:mysql://localhost:13306/takeout?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai}
+    username: ${TAKEOUT_DB_USERNAME:takeout}
+    password: ${TAKEOUT_DB_PASSWORD:takeout_dev_123}
+server:
+  port: 8080
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+---
+spring:
+  config:
+    activate:
+      on-profile: mysql
+app:
+  datasource:
+    url: ${TAKEOUT_DB_URL:jdbc:mysql://localhost:13306/takeout?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai}
+    username: ${TAKEOUT_DB_USERNAME:takeout}
+    password: ${TAKEOUT_DB_PASSWORD:takeout_dev_123}
+    maximum-pool-size: ${TAKEOUT_DB_POOL_SIZE:12}
+---
+spring:
+  config:
+    activate:
+      on-profile: mysql
+app:
+  persistence: mysql
+  redis:
+    enabled: ${TAKEOUT_REDIS_ENABLED:true}
+  rabbitmq:
+    enabled: ${TAKEOUT_RABBITMQ_ENABLED:true}

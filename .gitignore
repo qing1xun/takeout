@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+target/
+dist/
+build/
+out/
+
+# Local test and load-test artifacts
+backend/src/test/
+load-test/
+temp/
+*.jtl
+*.log
+html-report*/
+target-html-report*/
+gradient-*/
+data-limit-*/
+data-rel-*/
+
+# Environment and local machine files
+.env
+.env.*
+!.env.example
+.idea/
+.vscode/
+*.iml
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Runtime uploads/cache
+uploads/
+*.tmp
