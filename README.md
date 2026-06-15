@@ -172,10 +172,13 @@ npm run build
 RabbitMQ 消费者验证结果：
 
 ```text
-验证队列：takeout.events.consumer.verify.main
-发布事件：200 条
-消费者数：2
+复测队列：takeout.events.rel0930.main
+原报告积压：660 条 ready 消息
+本次复测启动前：2403 条 ready 消息
+消费者数：4
+消费后 messages：0
 消费后 messages_ready：0
 消费后 messages_unacknowledged：0
-结论：消费者能正常 ack 主队列消息，RabbitMQ 主队列不会因无人消费而积压。
+DLQ messages：0
+结论：旧测试队列中的历史积压消息已被 RabbitMQ 消费者正常 ack，主队列不会因无人消费而继续积压。
 ```
