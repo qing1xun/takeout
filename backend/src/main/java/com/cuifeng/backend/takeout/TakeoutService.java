@@ -1643,7 +1643,9 @@ public class TakeoutService {
                 .forEach(event -> {
                     boolean published = outboxPublisher == null || outboxPublisher.publish(event);
                     if (published) {
-                        consumeOutboxEventIdempotently(event);
+                        if (outboxPublisher == null || !outboxPublisher.enabled()) {
+                            consumePublishedOutboxEvent(event);
+                        }
                         event.retryCount++;
                         event.status = "PUBLISHED";
                         persistOutbox(event);
@@ -1655,7 +1657,7 @@ public class TakeoutService {
                 });
     }
 
-    private void consumeOutboxEventIdempotently(OutboxEvent event) {
+    public synchronized void consumePublishedOutboxEvent(OutboxEvent event) {
         if (!"ORDER_CREATED".equals(event.eventType)) {
             return;
         }

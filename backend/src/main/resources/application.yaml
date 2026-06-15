@@ -18,6 +18,10 @@ app:
     exchange: ${TAKEOUT_RABBITMQ_EXCHANGE:takeout.events}
     queue: ${TAKEOUT_RABBITMQ_QUEUE:takeout.events.main}
     dlq: ${TAKEOUT_RABBITMQ_DLQ:takeout.events.dlq}
+    consumer-enabled: ${TAKEOUT_RABBITMQ_CONSUMER_ENABLED:true}
+    consumers: ${TAKEOUT_RABBITMQ_CONSUMERS:2}
+    prefetch: ${TAKEOUT_RABBITMQ_PREFETCH:50}
+    reconnect-delay-ms: ${TAKEOUT_RABBITMQ_RECONNECT_DELAY_MS:3000}
   datasource:
     url: ${TAKEOUT_DB_URL:jdbc:mysql://localhost:13306/takeout?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai}
     username: ${TAKEOUT_DB_USERNAME:takeout}

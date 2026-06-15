@@ -542,7 +542,7 @@ public class DatabaseStore {
                 "user_account", "user_address", "store", "product", "cart_item", "order_main", "order_status_record",
                 "fulfillment_step", "inventory_reservation", "payment_order", "refund_order", "delivery_order",
                 "delivery_status_log", "review", "customer_service_ticket", "risk_record", "audit_log", "outbox_event",
-                "onboarding_application", "user_coupon", "coupon_status_log"
+                "merchant_notification", "onboarding_application", "user_coupon", "coupon_status_log"
         };
         long max = 0;
         try (Connection connection = connection()) {
